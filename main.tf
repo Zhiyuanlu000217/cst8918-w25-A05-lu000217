@@ -100,6 +100,17 @@ resource "azurerm_network_interface_security_group_association" "security_group_
   network_security_group_id = azurerm_network_security_group.security_group.id
 }
 
+data "cloudinit_config" "web" {
+  gzip          = false
+  base64_encode = false
+
+  part {
+    filename     = "init.sh"
+    content_type = "text/x-shellscript"
+    content      = file("${path.module}/init.sh")
+  }
+}
+
 
 
 
