@@ -95,6 +95,13 @@ resource "azurerm_network_interface" "virtual_network_interface" {
   }
 }
 
+resource "azurerm_network_interface_security_group_association" "security_group_association" {
+  network_interface_id      = azurerm_network_interface.virtual_network_interface.id
+  network_security_group_id = azurerm_network_security_group.security_group.id
+}
+
+
+
 
 
 
