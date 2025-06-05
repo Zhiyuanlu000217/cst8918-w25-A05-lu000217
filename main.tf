@@ -111,6 +111,41 @@ data "cloudinit_config" "web" {
   }
 }
 
+resource "azurerm_linux_virtual_machine" "linux_vm" {
+  name                = "${var.labelPrefix}-A05-VM"
+  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = azurerm_resource_group.resource_group.location
+  size                = "Standard_B1s"
+  admin_username      = var.admin_username
+
+  network_interface_ids = [
+    azurerm_network_interface.virtual_network_interface.id
+  ]
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+    name                 = "${var.labelPrefix}-A05-OSDISK"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-focal"
+    sku       = "20_04-lts-gen2"
+    version   = "latest"
+  }
+
+  computer_name  = "${var.labelPrefix}-A05-VM"
+  disable_password_authentication = true
+
+  admin_ssh_key {
+    username   = var.admin_username
+    public_key = var.ssh_public_key
+  }
+
+  custom_data = data.cloudinit_config.web.rendered
+}
+
 
 
 
