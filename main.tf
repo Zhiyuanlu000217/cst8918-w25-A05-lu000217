@@ -25,7 +25,15 @@ provider "cloudinit" {
   # Configuration options
 }
 
-resource "azurerm_resource_group" "main" {
+resource "azurerm_resource_group" "resource_group" {
   name     = "${var.labelPrefix}-A05-RG"
   location = var.region
+}
+
+resource "azurerm_public_ip" "public_ip" {
+  name                = "${var.labelPrefix}-A05-PIP"
+  resource_group_name = azurerm_resource_group.public_ip.name
+  location            = azurerm_resource_group.public_ip.location
+  allocation_method   = "Dynamic"
+  sku                 = "Basic"
 }
