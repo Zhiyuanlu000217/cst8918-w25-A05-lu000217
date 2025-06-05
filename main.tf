@@ -101,8 +101,8 @@ resource "azurerm_network_interface_security_group_association" "security_group_
 }
 
 data "cloudinit_config" "web" {
-  gzip          = false
-  base64_encode = false
+  gzip          = true
+  base64_encode = true
 
   part {
     filename     = "init.sh"
