@@ -32,8 +32,15 @@ resource "azurerm_resource_group" "resource_group" {
 
 resource "azurerm_public_ip" "public_ip" {
   name                = "${var.labelPrefix}-A05-PIP"
-  resource_group_name = azurerm_resource_group.public_ip.name
-  location            = azurerm_resource_group.public_ip.location
+  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = azurerm_resource_group.resource_group.location
   allocation_method   = "Dynamic"
   sku                 = "Basic"
+}
+
+resource "azurerm_virtual_network" "virtual_network" {
+  name                = "${var.labelPrefix}-A05-VNET"
+  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = azurerm_resource_group.resource_group.location
+  address_space       = ["10.0.0.0/16"]
 }
